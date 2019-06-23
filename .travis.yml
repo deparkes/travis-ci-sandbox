@@ -1,7 +1,3 @@
-os:
-  - windows
-  - linux
-  - osx
 jobs:
   include:
     - stage: Pre-tests
