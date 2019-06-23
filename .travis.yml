@@ -32,6 +32,7 @@ script:
   echo "python setup.py test"
 
 after_success:
+  - pip install pyinstaller
   - python -m pyinstaller my_app.py
   
 before_deploy:
@@ -39,4 +40,5 @@ before_deploy:
   - echo "do some stuff"
 deploy:
   provider: script
+  skip_cleanup: True
   script: echo "Do deployment"
