@@ -1,19 +1,34 @@
-language: python            # this works for Linux but is an error on macOS or Windows
-matrix:
+jobs:
   include:
-    - name: "Python 3.7.1 on Xenial Linux"
-      python: 3.7           # this works for Linux but is ignored on macOS or Windows
-      dist: xenial          # required for Python >= 3.7
-    - name: "Python 3.7.2 on macOS"
-      os: osx
-      osx_image: xcode10.2  # Python 3.7.2 running on macOS 10.14.3
-      language: shell       # 'language: python' is an error on Travis CI macOS
-    - name: "Python 3.7.3 on Windows"
-      os: windows           # Windows 10.0.17134 N/A Build 17134
-      language: shell       # 'language: python' is an error on Travis CI Windows
-      before_install: choco install python
-      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
-install: pip3 install --upgrade pip  # all three OSes agree about 'pip3'
-# 'python' points to Python 2.7 on macOS but points to Python 3.7 on Linux and Windows
-# 'python3' is a 'command not found' error on Windows but 'py' works on Windows only
-script: python3 my_app.py || python my_app.py
+    - stage: Pre-tests
+      - script: echo "Running unit tests (1)"
+      - script: echo "Running unit tests (2)"
+    - stage: Install Env
+      install:
+        - sudo apt-get update
+        # You may want to periodically update this, although the conda update
+        # conda line below will keep everything up-to-date.  We do this
+        # conditionally because it saves us some downloading if the version is
+        # the same.
+        - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+            wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+          else
+            wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+          fi
+        - bash miniconda.sh -b -p $HOME/miniconda
+        - export PATH="$HOME/miniconda/bin:$PATH"
+        - hash -r
+        - conda config --set always_yes yes --set changeps1 no
+        - conda update -q conda
+        # Useful for debugging any issues with conda
+        - conda info -a
+
+        # Replace dep1 dep2 ... with your dependencies
+        - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
+        - conda install -c conda-forge -n test-environment wxpython 
+        - source activate test-environment
+        - python setup.py install
+    - stage: Running tests
+        script: python setup.py test
+    - stage: GitHub Release
+        script: echo "Deploying to GitHub releases ..."
