@@ -56,3 +56,11 @@ install:
 
 script: 
 - conda --version && python --version && pip --version;
+
+after_success:
+  - echo "Build successful"
+  
+deploy:
+  provider: script
+  script: bash deploy.sh
+
