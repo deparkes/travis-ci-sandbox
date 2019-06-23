@@ -30,3 +30,11 @@ install:
 script:
   # Your test script goes here
   echo "python setup.py test"
+
+after_success:
+  - echo "python -m pyinstaller oommftools.py"
+  
+before_deploy:
+  - echo "do some stuff"
+deploy:
+  - echo "Some
