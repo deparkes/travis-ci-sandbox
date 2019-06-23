@@ -33,7 +33,7 @@ script:
 
 after_success:
   - pip install pyinstaller
-  - python -m pyinstaller my_app.py
+  - python -m PyInstaller my_app.py
   
 before_deploy:
   - ls
