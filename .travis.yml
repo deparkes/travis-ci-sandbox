@@ -5,7 +5,7 @@
 #       Miniconda (Python 3) 4.5.11, Chocolatey Gallery, https://chocolatey.org/packages/miniconda3
 #       The Windows Build Environment, https://docs.travis-ci.com/user/reference/windows/
 #       Minimal .travis.yml file to run the current Python 3.7 on Linux, macOS, and Windows, https://github.com/cclauss/Travis-CI-Python-on-three-OSes
-
+# https://github.com/kangwonlee/travis-yml-conda-posix-nt/blob/master/.travis.yml
 language : shell
 
 env:
