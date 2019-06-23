@@ -31,9 +31,7 @@ jobs:
         - source activate test-environment
         - echo "python setup.py install"
     - stage: Running tests
-      script:
-        # Your test script goes here
-        echo "python setup.py test"
+      script: pytest
     - stage: GitHub Release
       script: echo "Deploying to GitHub releases ..."
 
