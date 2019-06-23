@@ -37,4 +37,5 @@ after_success:
 before_deploy:
   - echo "do some stuff"
 deploy:
-  - echo "Some"
+  provider: script
+  script: echo "Do deployment"
