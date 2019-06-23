@@ -32,9 +32,10 @@ script:
   echo "python setup.py test"
 
 after_success:
-  - echo "python -m pyinstaller oommftools.py"
+  - python -m pyinstaller my_app.py
   
 before_deploy:
+  - ls
   - echo "do some stuff"
 deploy:
   provider: script
